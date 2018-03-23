@@ -204,15 +204,18 @@ public abstract class BaseSliderView {
 
 //        Glide p = new Glide.with(mContext);
 //        Glide rq = null;
-//        if(mUrl!=null){
+        if(mUrl!=null){
+            Glide.with(mContext).load(mUrl).into(targetImageView);
 //            rq = p.load(mUrl);
-//        }else if(mFile != null){
+        }else if(mFile != null){
+            Glide.with(mContext).load(mFile).into(targetImageView);
 //            rq = p.load(mFile);
-//        }else if(mRes != 0){
+        }else if(mRes != 0){
+            Glide.with(mContext).load(mRes).into(targetImageView);
 //            rq = p.load(mRes);
-//        }else{
-//            return;
-//        }
+        }else{
+            return;
+        }
 //
 //        if(rq == null){
 //            return;
