@@ -7,6 +7,9 @@ import android.widget.ImageView;
 
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.io.File;
 
@@ -205,7 +208,27 @@ public abstract class BaseSliderView {
 //        Glide p = new Glide.with(mContext);
 //        Glide rq = null;
         if(mUrl!=null){
-            Glide.with(mContext).load(mUrl).into(targetImageView);
+            Glide.with(mContext).load(mUrl)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                @Override
+                public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                    if(mLoadListener != null){
+                            mLoadListener.onEnd(false,me);
+                        }
+                        if(v.findViewById(R.id.loading_bar) != null){
+                            v.findViewById(R.id.loading_bar).setVisibility(View.INVISIBLE);
+                        }
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                    if(v.findViewById(R.id.loading_bar) != null){
+                        v.findViewById(R.id.loading_bar).setVisibility(View.INVISIBLE);
+                    }
+                    return false;
+                }
+            }).into(targetImageView);
 //            rq = p.load(mUrl);
         }else if(mFile != null){
             Glide.with(mContext).load(mFile).into(targetImageView);
